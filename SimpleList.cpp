@@ -6,6 +6,17 @@
 
 using namespace std;
 
+template<class T>
+void destroy(T element) {
+	// do nothing
+}
+
+template <class T>
+void destroy(T* element) {
+	// delete the pointer type
+	delete element;
+}
+
 template <class T>
 SimpleList<T>::SimpleList() {
     //set numElements to 0
@@ -16,6 +27,9 @@ SimpleList<T>::SimpleList() {
 
 template <class T>
 SimpleList<T>::~SimpleList() {
+    for(int i = 0; i < numElements; i++){
+        destroy(elements[i]);
+    }
     delete[] elements;
 }
 
@@ -75,9 +89,10 @@ void SimpleList<T>::remove(int index) throw (InvalidIndexException, EmptyListExc
         throw InvalidIndexException();
     }
     //removing the element at the index
+    destroy(elements[index]);
     numElements--;
     //shifting all elements inserted after the index
-    for(int i = index; i < numElements; i++){
+    for(int i = index; i < numElements + 1; i++){
         elements[i] = elements[i + 1];
     }
 }
